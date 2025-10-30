@@ -1,14 +1,12 @@
-# Netlify build configuration
 [build]
-  base = "thokMarket"          # 👈 यह तुम्हारे frontend folder का सही नाम है
-  publish = "thokMarket/dist"  # 👈 Vite का build output folder
-  command = "npm run build"    # 👈 Build command
+  base = "thokMarket"
+  publish = "dist"
+  command = "npm run build"
 
-# Optional: Specify Node.js version (recommended for consistency)
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20.19.0"
+  VITE_API_URL = "https://thokmarket-2-o.onrender.com"
 
-# Optional: Redirect all routes to index.html (for React Router support)
 [[redirects]]
   from = "/*"
   to = "/index.html"
