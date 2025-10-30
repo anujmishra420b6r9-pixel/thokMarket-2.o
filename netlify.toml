@@ -1,0 +1,4 @@
+[build]
+  base = "thokmarket"
+  publish = "thokmarket/dist"
+  command = "npm run build"
