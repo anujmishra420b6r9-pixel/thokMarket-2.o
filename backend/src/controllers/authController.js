@@ -42,12 +42,11 @@ export const login = async (req, res) => {
       });
 
       res.cookie("userToken", token, {
-        httpOnly: true,
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 1 month
-        sameSite: "lax", // Changed from strict for development
-        secure: true,
-        sameSite: "none", // Set to true in production with HTTPS
-      });
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 30 * 24 * 60 * 60 * 1000,
+});
 
       console.log("✅ Master login successful");
 
@@ -74,11 +73,11 @@ export const login = async (req, res) => {
         });
 
         res.cookie("userToken", token, {
-          httpOnly: true,
-          maxAge: 30 * 24 * 60 * 60 * 1000, // 1 month
-          sameSite: "none",// Set to true in production
-          secure: true,
-        });
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 30 * 24 * 60 * 60 * 1000,
+});
 
         // console.log("✅ Admin login successful:", admin.name);
 
@@ -108,11 +107,11 @@ export const login = async (req, res) => {
         });
 
         res.cookie("userToken", token, {
-          httpOnly: true,
-          maxAge: 30 * 24 * 60 * 60 * 1000, // 1 month
-          sameSite: "none",// Set to true in production
-          secure: true, // Set to true in production
-        });
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 30 * 24 * 60 * 60 * 1000,
+});
 
         // console.log("✅ User login successful:", user.name);
 
@@ -297,11 +296,11 @@ export async function userSignup(req, res) {
 
     // 🔹 6. Set JWT in cookies
     res.cookie("userToken", token, {
-      httpOnly: true, // prevent client-side JS access
-      secure: true, // set true if HTTPS
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 30 * 24 * 60 * 60 * 1000,
+});
 
     // 🔹 7. Send success response
     return res.status(201).json({
@@ -324,7 +323,7 @@ export async function userSignup(req, res) {
 export async function logout(req, res) {
   try {
     // 1️⃣ Clear the cookie
-    res.clearCookie("userInfo", {
+    res.clearCookie("userToken", {
       httpOnly: true,
       secure: false,       // production में true कर देना
       sameSite: "strict",
@@ -332,7 +331,7 @@ export async function logout(req, res) {
     });
 
     // 2️⃣ Log in console
-    console.log("✅ Cookies cleared for user logout");
+    // console.log("✅ Cookies cleared for user logout");
 
     // 3️⃣ Send response
     res.status(200).json({
