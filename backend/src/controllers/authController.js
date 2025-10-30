@@ -45,7 +45,8 @@ export const login = async (req, res) => {
         httpOnly: true,
         maxAge: 30 * 24 * 60 * 60 * 1000, // 1 month
         sameSite: "lax", // Changed from strict for development
-        secure: false, // Set to true in production with HTTPS
+        secure: true,
+        sameSite: "none", // Set to true in production with HTTPS
       });
 
       console.log("✅ Master login successful");
@@ -75,8 +76,8 @@ export const login = async (req, res) => {
         res.cookie("userToken", token, {
           httpOnly: true,
           maxAge: 30 * 24 * 60 * 60 * 1000, // 1 month
-          sameSite: "lax",
-          secure: false, // Set to true in production
+          sameSite: "none",// Set to true in production
+          secure: true,
         });
 
         // console.log("✅ Admin login successful:", admin.name);
@@ -109,8 +110,8 @@ export const login = async (req, res) => {
         res.cookie("userToken", token, {
           httpOnly: true,
           maxAge: 30 * 24 * 60 * 60 * 1000, // 1 month
-          sameSite: "lax",
-          secure: false, // Set to true in production
+          sameSite: "none",// Set to true in production
+          secure: true, // Set to true in production
         });
 
         // console.log("✅ User login successful:", user.name);
@@ -297,8 +298,8 @@ export async function userSignup(req, res) {
     // 🔹 6. Set JWT in cookies
     res.cookie("userToken", token, {
       httpOnly: true, // prevent client-side JS access
-      secure: false, // set true if HTTPS
-      sameSite: "strict",
+      secure: true, // set true if HTTPS
+      sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
