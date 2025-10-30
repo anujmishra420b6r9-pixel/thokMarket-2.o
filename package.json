@@ -1,0 +1,20 @@
+{
+  "name": "thokmarket---copy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix backend && npm install --prefix thokMarket && npm run build --prefix thokMarket"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anujmishra420b6r9-pixel/thokMarket-2.o.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anujmishra420b6r9-pixel/thokMarket-2.o/issues"
+  },
+  "homepage": "https://github.com/anujmishra420b6r9-pixel/thokMarket-2.o#readme"
+}
