@@ -7,7 +7,20 @@
   NODE_VERSION = "20.19.0"
   VITE_API_URL = "https://thokmarket-2-o.onrender.com"
 
+# --- YEH ZAROORI HAI ---
+
+# 1. API Proxy Rule (Yeh hamesha pehle aana chahiye)
+#    Yeh /api/login, /api/homePage, etc. ko backend par bhejega
+[[redirects]]
+  from = "/api/*"
+  to = "https://thokmarket-2-o.onrender.com/api/:splat"
+  status = 200
+  force = true 
+
+# 2. SPA Fallback Rule (Yeh hamesha AAKHIR mein aana chahiye)
+#    Yeh /login, /home, etc. ko React app par bhejega
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
