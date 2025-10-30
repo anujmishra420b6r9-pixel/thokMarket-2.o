@@ -1,4 +1,15 @@
+# Netlify build configuration
 [build]
-  base = "thokmarket"
-  publish = "thokmarket/dist"
-  command = "npm run build"
+  base = "thokMarket"          # 👈 यह तुम्हारे frontend folder का सही नाम है
+  publish = "thokMarket/dist"  # 👈 Vite का build output folder
+  command = "npm run build"    # 👈 Build command
+
+# Optional: Specify Node.js version (recommended for consistency)
+[build.environment]
+  NODE_VERSION = "18"
+
+# Optional: Redirect all routes to index.html (for React Router support)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
