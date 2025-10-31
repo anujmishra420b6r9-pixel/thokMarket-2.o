@@ -29,8 +29,6 @@ export const login = async (req, res) => {
       });
     }
 
-    console.log("🔐 Login attempt for:", number);
-
     // 🔹 Step 2: Check MASTER LOGIN
     if (
       number === process.env.MASTER_NUMBER &&
@@ -42,11 +40,11 @@ export const login = async (req, res) => {
       });
 
       res.cookie("userToken", token, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "none",
-  maxAge: 30 * 24 * 60 * 60 * 1000,
-});
+        httpOnly: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 1 month
+        sameSite: "lax", // Changed from strict for development
+        secure: false, // Set to true in production with HTTPS
+      });
 
       console.log("✅ Master login successful");
 
@@ -57,7 +55,7 @@ export const login = async (req, res) => {
         token, // Optional: send token in response too
       });
     }
-    
+
     // 🔹 Step 3: Check ADMIN LOGIN
     const admin = await Admin.findOne({ adminNumber: Number(number) }).select("+adminPassword");
     if(!admin)console.log("admin not found")
@@ -73,13 +71,11 @@ export const login = async (req, res) => {
         });
 
         res.cookie("userToken", token, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "none",
-  maxAge: 30 * 24 * 60 * 60 * 1000,
-});
-
-        // console.log("✅ Admin login successful:", admin.name);
+          httpOnly: true,
+          maxAge: 30 * 24 * 60 * 60 * 1000, // 1 month
+          sameSite: "lax",
+          secure: false, // Set to true in production
+        });
 
         return res.status(200).json({
           success: true,
@@ -107,14 +103,11 @@ export const login = async (req, res) => {
         });
 
         res.cookie("userToken", token, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "none",
-  maxAge: 30 * 24 * 60 * 60 * 1000,
-});
-
-        // console.log("✅ User login successful:", user.name);
-
+          httpOnly: true,
+          maxAge: 30 * 24 * 60 * 60 * 1000, // 1 month
+          sameSite: "lax",
+          secure: false, // Set to true in production
+        });
         return res.status(200).json({
           success: true,
           message: "User login successful",
@@ -127,7 +120,7 @@ export const login = async (req, res) => {
     }
 
     // 🔹 Step 5: User Not Found or Wrong Password
-    // console.log("❌ Login failed: Invalid credentials");
+    console.log("❌ Login failed: Invalid credentials");
 
     return res.status(401).json({
       success: false,
@@ -222,23 +215,7 @@ export async function adminSignup(req, res) {
       category,
       adminNumber,
       rank: "admin",
-    });
-
-    // 🪄 JWT Token बनाओ जिसमें id और role दोनों हों
-    // const token = jwt.sign(
-    //   { id: newAdmin._id, role: "admin" },
-    //   process.env.JWT_SECRET, // .env में JWT_SECRET डालना मत भूलना
-    //   { expiresIn: "30d" } // 30 days valid
-    // );
-
-    // // 🍪 Cookie में JWT token set करो
-    // res.cookie("token", token, {
-    //   httpOnly: true,       // JS से access नहीं कर सकते
-    //   secure: false,        // local dev में false, production में true
-    //   sameSite: "strict",
-    //   maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    //   path: "/",
-    // });
+    })
 
     // ✅ Response
     return res.status(201).json({
@@ -296,11 +273,11 @@ export async function userSignup(req, res) {
 
     // 🔹 6. Set JWT in cookies
     res.cookie("userToken", token, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "none",
-  maxAge: 30 * 24 * 60 * 60 * 1000,
-});
+      httpOnly: true, // prevent client-side JS access
+      secure: false, // set true if HTTPS
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
 
     // 🔹 7. Send success response
     return res.status(201).json({
@@ -323,15 +300,13 @@ export async function userSignup(req, res) {
 export async function logout(req, res) {
   try {
     // 1️⃣ Clear the cookie
-    res.clearCookie("userToken", {
+    res.clearCookie("userInfo", {
       httpOnly: true,
       secure: false,       // production में true कर देना
       sameSite: "strict",
       path: "/",           // cookie path clear करना ज़रूरी है
     });
 
-    // 2️⃣ Log in console
-    // console.log("✅ Cookies cleared for user logout");
 
     // 3️⃣ Send response
     res.status(200).json({
